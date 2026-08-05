@@ -23,13 +23,13 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const session = await getSession();
-  const isLoggedIn = session !== null
+  const isLoggedIn = !!session
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col pt-15 pl-63.75">
       {
         isLoggedIn && (
           <>
@@ -38,7 +38,6 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           </>
         )
       }
-
         {children}
       </body>
     </html>

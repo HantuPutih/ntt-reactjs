@@ -1,9 +1,9 @@
 import { cookies } from "next/headers";
-import { jwtVerify } from "jose";
+import {UserSessionInterFace} from "@/types/user";
 
 const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
 
-export async function getSession() {
+export async function getSession(): Promise<UserSessionInterFace | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get("accessToken")?.value;
 
@@ -12,7 +12,6 @@ export async function getSession() {
   }
 
   try {
-    let result = null
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/me`, {
       method: 'GET',
       headers: {

@@ -3,32 +3,27 @@
 import Link from "next/link";
 import {usePathname, useRouter} from "next/navigation";
 import { useState } from "react";
+import {UserSessionInterFace} from "@/types/user";
 
 type SidebarProps = {
-  session:{
-    firstName?: string,
-    lastName?: string,
-    image?: string,
-  }
+  session: UserSessionInterFace;
 };
 
 const menuItems = [
   {
     name: "Home",
-    href: "/dashboard",
+    href: "/",
   },
   {
     name: "Product",
-    href: "/dashboard/product",
+    href: "/product",
   },
 ];
 
 export default function Sidebar({session}: SidebarProps) {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  // const initials = `${session.firstName}${session.lastName}`.toUpperCase();
   async function handleLogout() {
     try {
       setIsLoggingOut(true);
@@ -40,8 +35,6 @@ export default function Sidebar({session}: SidebarProps) {
       if (!response.ok) {
         throw new Error("Logout failed");
       }
-
-      setIsOpen(false);
       router.push("/login");
       router.refresh();
     } catch (error) {
@@ -51,60 +44,15 @@ export default function Sidebar({session}: SidebarProps) {
     }
   }
 
-  if (!session) {
+  if (!session?.id) {
     return
   }
   return (
     <div className="z-5">
-      <button
-        type="button"
-        onClick={() => setIsOpen(true)}
-        className="fixed left-4 top-4 z-40 rounded-lg border border-gray-200 bg-white p-2 text-gray-700 shadow-sm md:hidden"
-        aria-label="Open sidebar"
-      >
-        <svg
-          className="h-6 w-6"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-      </button>
-
       <aside
-        className={`fixed left-0 top-0 z-50 flex h-screen w-64 flex-col border-r border-gray-200 bg-white transition-transform duration-300"
+        className={`fixed left-0 top-15 z-50 flex h-[calc(100vh-3.75rem)] w-64 flex-col border-r border-gray-200 bg-white"
         }`}
       >
-        <div className="flex h-16 items-center justify-between px-5">
-
-          <button
-            type="button"
-            onClick={() => setIsOpen(false)}
-            className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 md:hidden"
-            aria-label="Close sidebar"
-          >
-            <svg
-              className="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18 18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
-
         <nav className="flex-1 space-y-1 overflow-y-auto p-4">
           {menuItems.map((item) => {
             const isActive =
@@ -115,7 +63,7 @@ export default function Sidebar({session}: SidebarProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={() => setIsOpen(false)}
+                // onClick={() => setIsOpen(false)}
                 className={`block rounded-lg px-4 py-3 text-sm font-medium transition ${
                   isActive
                     ? "bg-gray-900 text-white"
@@ -136,7 +84,7 @@ export default function Sidebar({session}: SidebarProps) {
 
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold text-gray-900">
-                {session.firstName} {session.lastName}
+                {session?.firstName} {session?.lastName}
               </p>
               <button
                 type="button"
