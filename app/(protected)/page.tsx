@@ -6,7 +6,9 @@ const session = await getSession();
 export default function Home() {
   if (!session?.id) {
     return (
-      <Spinner />
+      <div className={"flex items-center justify-center h-screen w-full"}>
+        <Spinner />
+      </div>
     );
   }
   return (

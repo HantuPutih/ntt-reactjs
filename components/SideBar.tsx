@@ -4,6 +4,7 @@ import Link from "next/link";
 import {usePathname, useRouter} from "next/navigation";
 import { useState } from "react";
 import {UserSessionInterFace} from "@/types/user";
+import Image from "next/image";
 
 type SidebarProps = {
   session: UserSessionInterFace;
@@ -80,6 +81,7 @@ export default function Sidebar({session}: SidebarProps) {
           <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-900 text-sm font-semibold text-white">
               {/*{initials}*/}
+              <Image src={session.image || '/'} alt="profile picture" width={40} height={40} />
             </div>
 
             <div className="min-w-0">
