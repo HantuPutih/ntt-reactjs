@@ -6,7 +6,7 @@ export async function POST(request: Request) {
     const { email, password } = await request.json();
 
     const backendResponse = await fetch(
-      `https://dummyjson.com/auth/login`,
+      `${process.env.NEXT_PUBLIC_API_URL}auth/login`,
       {
         method: "POST",
         headers: {
@@ -42,7 +42,8 @@ export async function POST(request: Request) {
     return NextResponse.json({
       message: "Login successful",
     });
-  } catch {
+  } catch (err){
+    console.error(err);
     return NextResponse.json(
       { message: "Unable to process login" },
       { status: 500 }

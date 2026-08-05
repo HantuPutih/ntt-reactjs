@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { getSession } from "@/lib/auth";
+import Sidebar from "@/components/SideBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,13 +23,17 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const session = await getSession();
+  console.log(session)
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <body className="min-h-full flex flex-col">
       <Navbar isLoggedIn={!session} />
-      <body className="min-h-full flex flex-col">{children}</body>
+      <Sidebar firstName={'hehe'} lastName={'hoho'} />
+        {children}
+      </body>
     </html>
   );
 }

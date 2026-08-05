@@ -36,7 +36,7 @@ export default function Navbar({ isLoggedIn }: NavbarProps) {
   }
 
   return (
-    <nav className="border-b border-gray-200 bg-white">
+    <nav className=" z-50 border-b border-gray-200 bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link
           href="/"
@@ -47,28 +47,6 @@ export default function Navbar({ isLoggedIn }: NavbarProps) {
 
         {isLoggedIn && (
           <>
-            <div className="hidden items-center gap-8 md:flex">
-              <Link
-                href="/"
-                className="text-sm font-medium text-gray-600 transition hover:text-gray-950"
-              >
-                Home
-              </Link>
-
-              <Link
-                href="/dashboard"
-                className="text-sm font-medium text-gray-600 transition hover:text-gray-950"
-              >
-                Dashboard
-              </Link>
-
-              <Link
-                href="/profile"
-                className="text-sm font-medium text-gray-600 transition hover:text-gray-950"
-              >
-                Profile
-              </Link>
-            </div>
 
             <button
               type="button"
@@ -123,29 +101,6 @@ export default function Navbar({ isLoggedIn }: NavbarProps) {
       {isLoggedIn && isOpen && (
         <div className="border-t border-gray-200 px-4 py-4 md:hidden">
           <div className="flex flex-col gap-2">
-            <Link
-              href="/"
-              onClick={() => setIsOpen(false)}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-            >
-              Home
-            </Link>
-
-            <Link
-              href="/dashboard"
-              onClick={() => setIsOpen(false)}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-            >
-              Dashboard
-            </Link>
-
-            <Link
-              href="/profile"
-              onClick={() => setIsOpen(false)}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-            >
-              Profile
-            </Link>
 
             <button
               type="button"
