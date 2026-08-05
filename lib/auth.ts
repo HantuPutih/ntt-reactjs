@@ -1,5 +1,3 @@
-// src/lib/auth.ts
-
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 
@@ -14,24 +12,26 @@ export async function getSession() {
   }
 
   try {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/me`, {
+    let result = null
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/me`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${token}`, // Pass JWT via Authorization header
+        'Authorization': `Bearer ${token}`,
       },
-      credentials: 'include' // Include cookies (e.g., accessToken) in the request
-    })
-      .then(res => res.json())
-      .then((data) =>{
-        return {
-          firstName: data.firstName,
-          lastName: data.lastName,
-        }
-      });
+      credentials: 'include'
+    });
+
+    const data = await res.json();
+
+    return {
+      id: data.id,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      image: data.image,
+    };
 
   } catch(err) {
     console.log({err});
-    // Invalid, modified, or expired token
     return null;
   }
 }

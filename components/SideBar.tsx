@@ -5,8 +5,11 @@ import {usePathname, useRouter} from "next/navigation";
 import { useState } from "react";
 
 type SidebarProps = {
-  firstName: string;
-  lastName: string;
+  session:{
+    firstName?: string,
+    lastName?: string,
+    image?: string,
+  }
 };
 
 const menuItems = [
@@ -20,12 +23,12 @@ const menuItems = [
   },
 ];
 
-export default function Sidebar({firstName, lastName,}: SidebarProps) {
+export default function Sidebar({session}: SidebarProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+  // const initials = `${session.firstName}${session.lastName}`.toUpperCase();
   async function handleLogout() {
     try {
       setIsLoggingOut(true);
@@ -48,6 +51,9 @@ export default function Sidebar({firstName, lastName,}: SidebarProps) {
     }
   }
 
+  if (!session) {
+    return
+  }
   return (
     <div className="z-5">
       <button
@@ -125,15 +131,13 @@ export default function Sidebar({firstName, lastName,}: SidebarProps) {
         <div className="border-t border-gray-200 p-4">
           <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-900 text-sm font-semibold text-white">
-              {initials}
+              {/*{initials}*/}
             </div>
 
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold text-gray-900">
-                {firstName} {lastName}
+                {session.firstName} {session.lastName}
               </p>
-
-              <p className="text-xs text-gray-500">Logged in</p>
               <button
                 type="button"
                 onClick={handleLogout}
