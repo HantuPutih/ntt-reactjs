@@ -5,10 +5,8 @@ import {usePathname, useRouter} from "next/navigation";
 import { useState } from "react";
 import {UserSessionInterFace} from "@/types/user";
 import Image from "next/image";
+import {useAppSelector} from "@/lib/hooks";
 
-type SidebarProps = {
-  session: UserSessionInterFace;
-};
 
 const menuItems = [
   {
@@ -21,7 +19,10 @@ const menuItems = [
   },
 ];
 
-export default function Sidebar({session}: SidebarProps) {
+export default function Sidebar() {
+  const user = useAppSelector(
+    (state) => state.auth.user,
+  );
   const pathname = usePathname();
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -45,7 +46,7 @@ export default function Sidebar({session}: SidebarProps) {
     }
   }
 
-  if (!session?.id) {
+  if (!user?.id) {
     return
   }
   return (
@@ -81,12 +82,12 @@ export default function Sidebar({session}: SidebarProps) {
           <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-900 text-sm font-semibold text-white">
               {/*{initials}*/}
-              <Image src={session.image || '/'} alt="profile picture" width={40} height={40} />
+              <Image src={user.image || '/'} alt="profile picture" width={40} height={40} />
             </div>
 
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold text-gray-900">
-                {session?.firstName} {session?.lastName}
+                {user?.firstName} {user?.lastName}
               </p>
               <button
                 type="button"

@@ -1,15 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
-import { Product, ProductResponse } from "@/types/product";
+import {useCallback, useEffect, useState} from "react";
+import {Product, ProductResponse} from "@/types/product";
 import Spinner from "@/components/spinner";
+import {useAppSelector} from "@/lib/hooks";
+import ProductCard from "@/components/ProductCard";
 
 export default function ProductPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const deletedProducts = useAppSelector((state) => state.product.deletedProducts);
+
+  const filtered = useCallback((data:ProductResponse) => {
+    return data.products.filter(
+      (product: Product) =>
+        !deletedProducts.some(
+          (deletedProduct: { id: number; }) => deletedProduct.id === product.id,
+        ),
+    );
+  }, []);
 
   const loadProducts = useCallback(async () => {
     try {
@@ -26,7 +38,7 @@ export default function ProductPage() {
         throw new Error(data.message ?? "Failed to load products");
       }
 
-      setProducts(data.products);
+      setProducts(filtered(data));
     } catch (error) {
       setError(
         error instanceof Error
@@ -164,29 +176,7 @@ export default function ProductPage() {
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {products.map((product) => (
-              <Link
-                key={product.id}
-                href={`/product/${product.id}`}
-                className="overflow-hidden rounded-xl border border-gray-200 bg-white p-5 transition hover:-translate-y-1 hover:shadow-lg"
-              >
-                <img
-                  src={product.thumbnail}
-                  alt={product.title}
-                  className="h-48 w-full object-contain"
-                />
-
-                <h2 className="mt-4 text-lg font-semibold text-gray-900">
-                  {product.title}
-                </h2>
-
-                <p className="mt-2 line-clamp-2 text-sm text-gray-600">
-                  {product.description}
-                </p>
-
-                <p className="mt-4 font-bold text-gray-900">
-                  ${product.price.toFixed(2)}
-                </p>
-              </Link>
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         )}

@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
       {
@@ -9,7 +8,21 @@ const nextConfig: NextConfig = {
         hostname: "dummyjson.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.dummyjson.com",
+        pathname: "/**",
+      },
     ],
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: "/api/dummyjson/:path*",
+        destination: "https://dummyjson.com/:path*",
+      },
+    ];
   },
 };
 

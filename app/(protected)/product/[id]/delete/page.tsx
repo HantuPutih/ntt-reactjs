@@ -7,6 +7,8 @@ import {
   ApiErrorResponse,
   Product,
 } from "@/types/product";
+import {deleteProduct} from "@/lib/slices/productSlice";
+import {useAppDispatch} from "@/lib/hooks";
 
 type DeleteProductResponse = {
   message: string;
@@ -16,7 +18,7 @@ type DeleteProductResponse = {
 export default function DeleteProductPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
-
+  const dispatch = useAppDispatch();
   const productId = params.id;
 
   const [product, setProduct] = useState<Product | null>(null);
@@ -93,7 +95,7 @@ export default function DeleteProductPage() {
           data.message ?? "Failed to delete product",
         );
       }
-
+      dispatch(deleteProduct(data as unknown as Product));
       router.push("/product");
       router.refresh();
     } catch (error) {
