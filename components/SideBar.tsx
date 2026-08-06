@@ -3,10 +3,9 @@
 import Link from "next/link";
 import {usePathname, useRouter} from "next/navigation";
 import { useState } from "react";
-import {UserSessionInterFace} from "@/types/user";
 import Image from "next/image";
-import {useAppSelector} from "@/lib/hooks";
-
+import {useAppDispatch, useAppSelector} from "@/lib/hooks";
+import {clearUser} from "@/lib/slices/authSlice";
 
 const menuItems = [
   {
@@ -20,6 +19,8 @@ const menuItems = [
 ];
 
 export default function Sidebar() {
+  const dispatch = useAppDispatch();
+  
   const user = useAppSelector(
     (state) => state.auth.user,
   );
@@ -27,6 +28,7 @@ export default function Sidebar() {
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   async function handleLogout() {
+
     try {
       setIsLoggingOut(true);
 
@@ -37,6 +39,7 @@ export default function Sidebar() {
       if (!response.ok) {
         throw new Error("Logout failed");
       }
+      dispatch(clearUser());
       router.push("/login");
       router.refresh();
     } catch (error) {

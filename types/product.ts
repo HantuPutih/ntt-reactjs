@@ -22,15 +22,6 @@ export interface ProductResponse {
   limit: number;
 }
 
-export interface ProductFormData {
-  title: string;
-  description: string;
-  category: string;
-  price: number;
-  stock: number;
-  brand: string;
-}
-
 
 export interface AddProductRequest {
   title: string;

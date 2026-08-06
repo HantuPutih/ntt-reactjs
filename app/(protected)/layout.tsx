@@ -48,9 +48,7 @@ async function getSession(): Promise<UserSessionInterFace | null> {
   }
 }
 
-export default async function ProtectedLayout({
-                                                children,
-                                              }: {
+export default async function ProtectedLayout({ children }: {
   children: React.ReactNode;
 }) {
   const session = await getSession();

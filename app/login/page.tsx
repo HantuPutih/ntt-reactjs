@@ -7,8 +7,8 @@ export default function LoginPage() {
   const router = useRouter();
 
   const [creds, setCreds] = useState({
-    email: "emilys",
-    password: "emilyspass",
+    email: "",
+    password: "",
   });
 
   const [error, setError] = useState("");
